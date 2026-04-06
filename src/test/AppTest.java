@@ -1,24 +1,29 @@
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 public class AppTest {
 
     @Test
-    void testAverage() {
-        int[] marks = {80, 60};
-        assertEquals(70.0, App.average(marks));
+    void testPremiumFestivalHighStock() {
+        double result = App.calculateDiscount(1000, 1, "festival", 150);
+        assertEquals(700, result); // 30% max discount
     }
 
     @Test
-    void testTopper() {
-        int[] marks = {80, 90};
-        assertEquals(90, App.topper(marks));
+    void testRegularUserNoSeason() {
+        double result = App.calculateDiscount(1000, 0, "normal", 50);
+        assertEquals(1000, result); // No discount
     }
 
     @Test
-    void testPerformance() {
-        assertEquals("High", App.performance(80));
-        assertEquals("Medium", App.performance(60));
-        assertEquals("Low", App.performance(40));
+    void testFestivalOnly() {
+        double result = App.calculateDiscount(1000, 0, "festival", 50);
+        assertEquals(850, result); // 15% discount
+    }
+
+    @Test
+    void testHighStockOnly() {
+        double result = App.calculateDiscount(1000, 0, "normal", 200);
+        assertEquals(950, result); // 5% discount
     }
 }
