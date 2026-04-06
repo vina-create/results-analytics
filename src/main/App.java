@@ -1,31 +1,33 @@
 public class App {
 
-    public static double average(int[] marks) {
-        int sum = 0;
-        for(int m : marks) sum += m;
-        return (double) sum / marks.length;
-    }
+    public static double calculateDiscount(double price, int userType, String season, int stock) {
+        double discount = 0;
 
-    public static int topper(int[] marks) {
-        int max = marks[0];
-        for(int m : marks)
-            if(m > max) max = m;
-        return max;
-    }
+        // User behavior discount
+        if (userType == 1) { // Premium user
+            discount += 10;
+        }
 
-    public static String performance(int mark) {
-        if(mark >= 75) return "High";
-        else if(mark >= 50) return "Medium";
-        else return "Low";
+        // Seasonal discount
+        if (season.equalsIgnoreCase("festival")) {
+            discount += 15;
+        }
+
+        // Inventory-based discount
+        if (stock > 100) {
+            discount += 5;
+        }
+
+        // Max discount cap
+        if (discount > 30) {
+            discount = 30;
+        }
+
+        return price - (price * discount / 100);
     }
 
     public static void main(String[] args) {
-        int[] marks = {80, 60, 40};
-
-        System.out.println("Average: " + average(marks));
-        System.out.println("Topper: " + topper(marks));
-
-        for(int m : marks)
-            System.out.println(m + " -> " + performance(m));
+        double finalPrice = calculateDiscount(1000, 1, "festival", 150);
+        System.out.println("Final Price: " + finalPrice);
     }
 }
