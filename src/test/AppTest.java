@@ -1,29 +1,35 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class AppTest {
 
     @Test
-    void testPremiumFestivalHighStock() {
-        double result = App.calculateDiscount(1000, 1, "festival", 150);
-        assertEquals(700, result); // 30% max discount
+    void testValidPayment() {
+        assertTrue(App.processPayment(500, "1234567812345678", "123"));
     }
 
     @Test
-    void testRegularUserNoSeason() {
-        double result = App.calculateDiscount(1000, 0, "normal", 50);
-        assertEquals(1000, result); // No discount
+    void testInvalidAmount() {
+        assertFalse(App.processPayment(0, "1234567812345678", "123"));
     }
 
     @Test
-    void testFestivalOnly() {
-        double result = App.calculateDiscount(1000, 0, "festival", 50);
-        assertEquals(850, result); // 15% discount
+    void testInvalidCardNumberLength() {
+        assertFalse(App.processPayment(500, "1234", "123"));
     }
 
     @Test
-    void testHighStockOnly() {
-        double result = App.calculateDiscount(1000, 0, "normal", 200);
-        assertEquals(950, result); // 5% discount
+    void testInvalidCardNumberCharacters() {
+        assertFalse(App.processPayment(500, "1234abcd5678efgh", "123"));
+    }
+
+    @Test
+    void testInvalidCVVLength() {
+        assertFalse(App.processPayment(500, "1234567812345678", "12"));
+    }
+
+    @Test
+    void testInvalidCVVCharacters() {
+        assertFalse(App.processPayment(500, "1234567812345678", "abc"));
     }
 }

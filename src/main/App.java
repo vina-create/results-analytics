@@ -1,33 +1,40 @@
 public class App {
 
-    public static double calculateDiscount(double price, int userType, String season, int stock) {
-        double discount = 0;
+    // Method to validate payment
+    public static boolean processPayment(double amount, String cardNumber, String cvv) {
 
-        // User behavior discount
-        if (userType == 1) { // Premium user
-            discount += 10;
+        // Basic validations
+        if (amount <= 0) {
+            return false;
         }
 
-        // Seasonal discount
-        if (season.equalsIgnoreCase("festival")) {
-            discount += 15;
+        if (cardNumber == null || cardNumber.length() != 16) {
+            return false;
         }
 
-        // Inventory-based discount
-        if (stock > 100) {
-            discount += 5;
+        if (!cardNumber.matches("\\d+")) {
+            return false;
         }
 
-        // Max discount cap
-        if (discount > 30) {
-            discount = 30;
+        if (cvv == null || cvv.length() != 3) {
+            return false;
         }
 
-        return price - (price * discount / 100);
+        if (!cvv.matches("\\d+")) {
+            return false;
+        }
+
+        // If all validations pass
+        return true;
     }
 
     public static void main(String[] args) {
-        double finalPrice = calculateDiscount(1000, 1, "festival", 150);
-        System.out.println("Final Price: " + finalPrice);
+        boolean result = processPayment(1000, "1234567812345678", "123");
+
+        if (result) {
+            System.out.println("Payment Successful");
+        } else {
+            System.out.println("Payment Failed");
+        }
     }
 }
